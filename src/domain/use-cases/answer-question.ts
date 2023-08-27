@@ -10,11 +10,13 @@ interface AnswerQuestionUseCaseRequest {
 }
 
 export class AnswerQuestionUseCase {
-  constructor(
-    private readonly answersRepository: AnswersRepository,
-  ) {}
+  constructor(private readonly answersRepository: AnswersRepository) {}
 
-  async execute({ instructorId, questionId, content }: AnswerQuestionUseCaseRequest) {
+  async execute({
+    instructorId,
+    questionId,
+    content,
+  }: AnswerQuestionUseCaseRequest) {
     const answer = Answer.create({
       authorId: new UniqueEntityID(instructorId),
       questionId: new UniqueEntityID(questionId),

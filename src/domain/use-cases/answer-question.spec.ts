@@ -1,10 +1,12 @@
 import { Answer } from '../entities/answer'
-import { AnswersRepository } from '../repositories/answers-repository'
-
 import { AnswerQuestionUseCase } from './answer-question'
 
-const fakeAnswersRepository: AnswersRepository = {
-  create: async (answer: Answer) => {}
+const fakeAnswersRepository = {
+  items: [] as Answer[],
+
+  async create(answer: Answer) {
+    this.items.push(answer)
+  },
 }
 
 test('Create an answer', async () => {
