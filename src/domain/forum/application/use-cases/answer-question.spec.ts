@@ -1,4 +1,4 @@
-import { Answer } from '../entities/answer'
+import { Answer } from '../../enterprise/entities/answer'
 import { AnswerQuestionUseCase } from './answer-question'
 
 const fakeAnswersRepository = {
