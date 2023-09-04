@@ -1,8 +1,12 @@
 export class Slug {
   public readonly value: string
 
-  constructor(value: string) {
+  private constructor(value: string) {
     this.value = value
+  }
+
+  static create(slug: string) {
+    return new Slug(slug)
   }
 
   /**
@@ -13,7 +17,7 @@ export class Slug {
    * @param text string
    * @returns Slug
    */
-  static generateFromText(text: string) {
+  static createFromText(text: string) {
     const slugText = text
       .normalize('NFKD')
       .toLowerCase()
@@ -27,5 +31,3 @@ export class Slug {
     return new Slug(slugText)
   }
 }
-
-Slug.generateFromText('abc')
