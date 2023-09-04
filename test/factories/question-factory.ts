@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker'
+
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   Question,
@@ -7,12 +9,15 @@ import {
 export class QuestionFactory {
   private constructor() {}
 
-  static make(override: Partial<QuestionProps> = {}) {
-    return Question.create({
-      authorId: new UniqueEntityID(),
-      title: 'Example',
-      content: 'Example content',
-      ...override,
-    })
+  static make(override: Partial<QuestionProps> = {}, id?: UniqueEntityID) {
+    return Question.create(
+      {
+        authorId: new UniqueEntityID(),
+        title: faker.lorem.sentence(),
+        content: faker.lorem.text(),
+        ...override,
+      },
+      id,
+    )
   }
 }
