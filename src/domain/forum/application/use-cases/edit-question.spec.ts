@@ -32,8 +32,8 @@ describe('Edit question', () => {
     })
 
     expect(questionsRepository.items.at(0)).toMatchObject({
-      title: newQuestion.title,
-      content: newQuestion.content,
+      title: 'Updated question',
+      content: 'Updated question content',
     })
   })
 
