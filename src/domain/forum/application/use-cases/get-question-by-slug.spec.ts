@@ -27,4 +27,12 @@ describe('Get question by slug', () => {
     expect(question.id).toBeTruthy()
     expect(question.title).toEqual(newQuestion.title)
   })
+
+  it('should not be able to get a non-existent question by slug', async () => {
+    await expect(() =>
+      sut.execute({
+        slug: 'example-question',
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
 })
