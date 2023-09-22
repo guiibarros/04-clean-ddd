@@ -1,5 +1,6 @@
 export class Left<L> {
   readonly value: L
+  readonly type = 'left'
 
   constructor(value: L) {
     this.value = value
@@ -8,6 +9,7 @@ export class Left<L> {
 
 export class Right<R> {
   readonly value: R
+  readonly type = 'right'
 
   constructor(value: R) {
     this.value = value
@@ -16,10 +18,18 @@ export class Right<R> {
 
 export type Either<L, R> = Left<L> | Right<R>
 
-export const left = <L, R>(value: L): Either<L, R> => {
+export const left = <L>(value: L) => {
   return new Left(value)
 }
 
-export const right = <L, R>(value: R): Either<L, R> => {
+export const right = <R>(value: R) => {
   return new Right(value)
+}
+
+export const isRight = <L, R>(input: Either<L, R>): input is Right<R> => {
+  return input.type === 'right'
+}
+
+export const isLeft = <L, R>(input: Either<L, R>): input is Left<L> => {
+  return input.type === 'left'
 }
