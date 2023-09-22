@@ -18,11 +18,11 @@ export class Right<R> {
 
 export type Either<L, R> = Left<L> | Right<R>
 
-export const left = <L>(value: L) => {
+export const left = <L, R>(value: L): Either<L, R> => {
   return new Left(value)
 }
 
-export const right = <R>(value: R) => {
+export const right = <L, R>(value: R): Either<L, R> => {
   return new Right(value)
 }
 
