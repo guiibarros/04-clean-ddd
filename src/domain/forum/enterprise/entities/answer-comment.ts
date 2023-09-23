@@ -1,15 +1,12 @@
-import {
-  CommentEntity,
-  CommentEntityProps,
-} from '@/core/entities/comment-entity'
+import { Comment, CommentProps } from '@/core/entities/comment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-export interface AnswerCommentProps extends CommentEntityProps {
+export interface AnswerCommentProps extends CommentProps {
   answerId: UniqueEntityID
 }
 
-export class AnswerComment extends CommentEntity<AnswerCommentProps> {
+export class AnswerComment extends Comment<AnswerCommentProps> {
   get answerId() {
     return this.props.answerId
   }

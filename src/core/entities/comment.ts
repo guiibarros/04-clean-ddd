@@ -1,15 +1,15 @@
 import { Entity } from './entity'
 import { UniqueEntityID } from './unique-entity-id'
 
-export interface CommentEntityProps {
+export interface CommentProps {
   authorId: UniqueEntityID
   content: string
   createdAt: Date
   updatedAt?: Date
 }
 
-export abstract class CommentEntity<
-  Props extends CommentEntityProps,
+export abstract class Comment<
+  Props extends CommentProps,
 > extends Entity<Props> {
   get authorId() {
     return this.props.authorId
