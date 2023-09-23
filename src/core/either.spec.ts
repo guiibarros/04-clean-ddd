@@ -12,7 +12,7 @@ test('success result', () => {
   const result = shouldSuccess(true)
 
   if (isRight(result)) {
-    console.log(result.value.toFixed(2))
+    result.value.toFixed(2)
   }
 
   expect(isRight(result)).toBe(true)
@@ -23,7 +23,7 @@ test('failure result', () => {
   const result = shouldSuccess(false)
 
   if (isLeft(result)) {
-    console.log(result.value.toUpperCase())
+    result.value.toUpperCase()
   }
 
   expect(isLeft(result)).toBe(true)

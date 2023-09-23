@@ -1,5 +1,7 @@
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 
+import { isRight } from '@/core/either'
+
 import { AnswerQuestionUseCase } from './answer-question'
 
 let answersRepository: InMemoryAnswersRepository
@@ -12,13 +14,13 @@ describe('Answer question', () => {
   })
 
   it('should be able to answer a question', async () => {
-    const { answer } = await sut.execute({
+    const result = await sut.execute({
       questionId: '1',
       instructorId: '1',
       content: 'Conteúdo da resposta',
     })
 
-    expect(answer.id).toBeTruthy()
-    expect(answersRepository.items[0].id).toEqual(answer.id)
+    expect(isRight(result)).toBe(true)
+    expect(answersRepository.items[0]).toEqual(result.value?.answer)
   })
 })

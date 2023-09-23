@@ -3,6 +3,8 @@ import { QuestionFactory } from 'test/factories/question-factory'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
+import { isRight } from '@/core/either'
+
 import { CommentOnQuestionUseCase } from './comment-on-question'
 
 let questionsRepository: InMemoryQuestionsRepository
@@ -25,15 +27,19 @@ describe('Comment on question use case', () => {
     const question = QuestionFactory.make()
     await questionsRepository.create(question)
 
-    const { questionComment } = await sut.execute({
+    const result = await sut.execute({
       questionId: question.id.toString(),
       authorId: question.authorId.toString(),
       content: faker.lorem.text(),
     })
 
-    expect(questionComment.id).toBeTruthy()
-    expect(questionCommentsRepository.items[0].content).toEqual(
-      questionComment.content,
-    )
+    const success = isRight(result)
+    expect(success).toBe(true)
+
+    if (success) {
+      expect(questionCommentsRepository.items[0]).toEqual(
+        result.value.questionComment,
+      )
+    }
   })
 })

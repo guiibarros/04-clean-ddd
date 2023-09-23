@@ -1,7 +1,10 @@
 import { QuestionFactory } from 'test/factories/question-factory'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
+import { isLeft, isRight } from '@/core/either'
+
 import { Slug } from '../../enterprise/entities/value-objects/slug'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 import { GetQuestionBySlugUseCase } from './get-question-by-slug'
 
 let questionsRepository: InMemoryQuestionsRepository
@@ -14,25 +17,30 @@ describe('Get question by slug', () => {
   })
 
   it('should be able to get a question by slug', async () => {
-    const newQuestion = QuestionFactory.make({
+    const question = QuestionFactory.make({
       slug: Slug.create('example-question'),
     })
 
-    await questionsRepository.create(newQuestion)
+    await questionsRepository.create(question)
 
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       slug: 'example-question',
     })
 
-    expect(question.id).toBeTruthy()
-    expect(question.title).toEqual(newQuestion.title)
+    const success = isRight(result)
+    expect(success).toBe(true)
+
+    if (success) {
+      expect(result.value.question).toEqual(question)
+    }
   })
 
   it('should not be able to get a non-existent question by slug', async () => {
-    await expect(() =>
-      sut.execute({
-        slug: 'example-question',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      slug: 'example-question',
+    })
+
+    expect(isLeft(result)).toBe(true)
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError)
   })
 })
