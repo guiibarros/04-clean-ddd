@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { QuestionFactory } from 'test/factories/question-factory'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
@@ -8,13 +9,17 @@ import { isRight } from '@/core/either'
 import { CommentOnQuestionUseCase } from './comment-on-question'
 
 let questionsRepository: InMemoryQuestionsRepository
+let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let questionCommentsRepository: InMemoryQuestionCommentsRepository
 
 let sut: CommentOnQuestionUseCase
 
 describe('Comment on question use case', () => {
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+    )
     questionCommentsRepository = new InMemoryQuestionCommentsRepository()
 
     sut = new CommentOnQuestionUseCase(

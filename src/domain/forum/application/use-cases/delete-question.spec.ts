@@ -1,4 +1,6 @@
+import { QuestionAttachmentsFactory } from 'test/factories/question-attachments-factory'
 import { QuestionFactory } from 'test/factories/question-factory'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 
 import { isLeft } from '@/core/either'
@@ -9,11 +11,17 @@ import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let questionsRepository: InMemoryQuestionsRepository
+let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+
 let sut: DeleteQuestionUseCase
 
 describe('Delete question', () => {
   beforeEach(() => {
-    questionsRepository = new InMemoryQuestionsRepository()
+    questionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository()
+    questionsRepository = new InMemoryQuestionsRepository(
+      questionAttachmentsRepository,
+    )
+
     sut = new DeleteQuestionUseCase(questionsRepository)
   })
 
@@ -27,12 +35,22 @@ describe('Delete question', () => {
 
     await questionsRepository.create(newQuestion)
 
+    questionAttachmentsRepository.items.push(
+      QuestionAttachmentsFactory.make({
+        questionId: new UniqueEntityID('question-1'),
+      }),
+      QuestionAttachmentsFactory.make({
+        questionId: new UniqueEntityID('question-1'),
+      }),
+    )
+
     await sut.execute({
       questionId: 'question-1',
       authorId: 'author-1',
     })
 
     expect(questionsRepository.items).toHaveLength(0)
+    expect(questionAttachmentsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a non-existent question', async () => {
