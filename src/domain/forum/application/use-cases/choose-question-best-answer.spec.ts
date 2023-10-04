@@ -7,9 +7,9 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 
 import { isLeft } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
 
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
 
 let questionsRepository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository

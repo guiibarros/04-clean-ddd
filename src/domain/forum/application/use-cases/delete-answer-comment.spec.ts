@@ -3,10 +3,10 @@ import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-an
 
 import { isLeft } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let answerCommentsRepository: InMemoryAnswerCommentsRepository
 let sut: DeleteAnswerCommentUseCase

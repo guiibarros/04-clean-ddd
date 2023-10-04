@@ -5,10 +5,10 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 
 import { isLeft } from '@/core/either'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from '@/core/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error'
 
 import { DeleteAnswerUseCase } from './delete-answer'
-import { NotAllowedError } from './errors/not-allowed-error'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let answersRepository: InMemoryAnswersRepository
 let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
