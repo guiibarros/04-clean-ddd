@@ -1,4 +1,6 @@
+import { AnswerAttachmentsFactory } from 'test/factories/answer-attachments-factory'
 import { AnswerFactory } from 'test/factories/answer-factory'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 
 import { isLeft } from '@/core/either'
@@ -9,23 +11,38 @@ import { NotAllowedError } from './errors/not-allowed-error'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let answersRepository: InMemoryAnswersRepository
+let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+
 let sut: DeleteAnswerUseCase
 
 describe('Delete answer', () => {
   beforeEach(() => {
-    answersRepository = new InMemoryAnswersRepository()
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    answersRepository = new InMemoryAnswersRepository(
+      answerAttachmentsRepository,
+    )
+
     sut = new DeleteAnswerUseCase(answersRepository)
   })
 
   it('should be able to delete a answer', async () => {
-    const newAnswer = AnswerFactory.make(
+    const answer = AnswerFactory.make(
       {
         authorId: new UniqueEntityID('author-1'),
       },
       new UniqueEntityID('answer-1'),
     )
 
-    await answersRepository.create(newAnswer)
+    await answersRepository.create(answer)
+
+    answerAttachmentsRepository.items.push(
+      AnswerAttachmentsFactory.make({
+        answerId: new UniqueEntityID('answer-1'),
+      }),
+      AnswerAttachmentsFactory.make({
+        answerId: new UniqueEntityID('answer-1'),
+      }),
+    )
 
     await sut.execute({
       answerId: 'answer-1',
@@ -33,6 +50,7 @@ describe('Delete answer', () => {
     })
 
     expect(answersRepository.items).toHaveLength(0)
+    expect(answerAttachmentsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a non-existent answer', async () => {
@@ -46,14 +64,14 @@ describe('Delete answer', () => {
   })
 
   it('should not be able to delete a answer from another author', async () => {
-    const newAnswer = AnswerFactory.make(
+    const answer = AnswerFactory.make(
       {
         authorId: new UniqueEntityID('author-1'),
       },
       new UniqueEntityID('answer-1'),
     )
 
-    await answersRepository.create(newAnswer)
+    await answersRepository.create(answer)
 
     const result = await sut.execute({
       answerId: 'answer-1',

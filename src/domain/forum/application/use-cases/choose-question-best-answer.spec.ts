@@ -1,5 +1,6 @@
 import { AnswerFactory } from 'test/factories/answer-factory'
 import { QuestionFactory } from 'test/factories/question-factory'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
@@ -12,6 +13,7 @@ import { NotAllowedError } from './errors/not-allowed-error'
 
 let questionsRepository: InMemoryQuestionsRepository
 let questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+let answerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let answersRepository: InMemoryAnswersRepository
 
 let sut: ChooseQuestionBestAnswerUseCase
@@ -22,7 +24,11 @@ describe('Choose question best answer', () => {
     questionsRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
     )
-    answersRepository = new InMemoryAnswersRepository()
+
+    answerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository()
+    answersRepository = new InMemoryAnswersRepository(
+      answerAttachmentsRepository,
+    )
 
     sut = new ChooseQuestionBestAnswerUseCase(
       questionsRepository,

@@ -26,14 +26,14 @@ describe('Delete question', () => {
   })
 
   it('should be able to delete a question', async () => {
-    const newQuestion = QuestionFactory.make(
+    const question = QuestionFactory.make(
       {
         authorId: new UniqueEntityID('author-1'),
       },
       new UniqueEntityID('question-1'),
     )
 
-    await questionsRepository.create(newQuestion)
+    await questionsRepository.create(question)
 
     questionAttachmentsRepository.items.push(
       QuestionAttachmentsFactory.make({
@@ -64,14 +64,14 @@ describe('Delete question', () => {
   })
 
   it('should not be able to delete a question from another author', async () => {
-    const newQuestion = QuestionFactory.make(
+    const question = QuestionFactory.make(
       {
         authorId: new UniqueEntityID('author-1'),
       },
       new UniqueEntityID('question-1'),
     )
 
-    await questionsRepository.create(newQuestion)
+    await questionsRepository.create(question)
 
     const result = await sut.execute({
       questionId: 'question-1',

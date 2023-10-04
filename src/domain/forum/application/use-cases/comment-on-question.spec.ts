@@ -20,6 +20,7 @@ describe('Comment on question use case', () => {
     questionsRepository = new InMemoryQuestionsRepository(
       questionAttachmentsRepository,
     )
+
     questionCommentsRepository = new InMemoryQuestionCommentsRepository()
 
     sut = new CommentOnQuestionUseCase(
