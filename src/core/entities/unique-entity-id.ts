@@ -7,11 +7,15 @@ export class UniqueEntityID {
     this.value = value ?? randomUUID()
   }
 
-  toString() {
+  public toString() {
     return this.value
   }
 
-  toValue() {
+  public toValue() {
     return this.value
+  }
+
+  public equals(id: UniqueEntityID) {
+    return id.toValue() === this.value
   }
 }

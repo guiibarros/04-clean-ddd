@@ -4,6 +4,6 @@ import { AnswerAttachment } from './answer-attachment'
 
 export class AnswerAttachmentList extends WatchedList<AnswerAttachment> {
   protected compareItems(a: AnswerAttachment, b: AnswerAttachment) {
-    return a.attachmentId === b.attachmentId
+    return a.attachmentId.equals(b.attachmentId)
   }
 }
