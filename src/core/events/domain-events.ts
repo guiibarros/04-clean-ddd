@@ -2,12 +2,13 @@ import { AggregateRoot } from '../entities/aggregate-root'
 import { UniqueEntityID } from '../entities/unique-entity-id'
 import { DomainEvent } from './domain-event'
 
-type DomainEventCallback = (event: unknown) => void
+type DomainEventCallback<T extends DomainEvent> = (event: T) => void
 
 export class DomainEvents {
   private constructor() {}
 
-  private static handlersMap: Record<string, DomainEventCallback[]> = {}
+  private static handlersMap: Record<string, DomainEventCallback<any>[]> = {}
+
   private static markedAggregates: AggregateRoot<unknown>[] = []
 
   public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>) {
@@ -46,7 +47,10 @@ export class DomainEvents {
     }
   }
 
-  public static register(eventName: string, callback: DomainEventCallback) {
+  public static register<T extends DomainEvent>(
+    eventName: string,
+    callback: DomainEventCallback<T>,
+  ) {
     const wasEventRegisteredBefore = eventName in this.handlersMap
 
     if (!wasEventRegisteredBefore) {

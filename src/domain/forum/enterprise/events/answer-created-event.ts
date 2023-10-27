@@ -5,8 +5,7 @@ import { Answer } from '../entities/answer'
 
 export class AnswerCreatedEvent implements DomainEvent {
   public ocurredAt: Date
-
-  private answer: Answer
+  public answer: Answer
 
   constructor(answer: Answer) {
     this.answer = answer
