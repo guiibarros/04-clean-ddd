@@ -6,6 +6,7 @@
   "rules": {
     "no-useless-constructor": "off",
     "no-useless-return": "off",
+    "no-new": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "import-helpers/order-imports": [
